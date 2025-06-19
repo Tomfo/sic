@@ -393,7 +393,7 @@ export default function RegisteredMembersData() {
       setLoading(false);
     }}
      fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
-  }, []);
+  });
 
 const safeRows = useMemo(() => {
     return members.filter((member) => {
@@ -446,7 +446,7 @@ const safeRows = useMemo(() => {
       ) : error ? (
         <Alert severity='error'>{error}</Alert>
       ) : members.length === 0 ? (
-        <Alert severity='info'>No members found matching "{searchTerm}".</Alert>
+        <Alert severity='info'>{`No members found matching ${searchTerm}.`}</Alert>
       ) : (
         <TableContainer
           component={Paper}
