@@ -280,6 +280,7 @@ function ActionsCell({ member, onDeleteRecord }) {
   );
 }
 
+//debounce hook
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -297,10 +298,11 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-export default function RegisteredMembersData({ rows }) {
+export default function RegisteredMembersData() {
   const { user } = useUser();
   const isMobile = useMediaQuery('(max-width:640px)');
   const primaryEmail = user?.primaryEmailAddress?.emailAddress;
+
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 500); // Debounce for 500ms
 
@@ -313,18 +315,19 @@ export default function RegisteredMembersData({ rows }) {
   // const [open, setOpen] = useState(false);
   // Ensure rows is always an array
   // const safeRows = Array.isArray(members) ? members : [];
+
   // Filter rows in-memory
-  const safeRows = useMemo(() => {
-    return members.filter((member) => {
-      const search = debouncedSearchTerm.toLowerCase();
-      return (
-        member.firstName.toLowerCase().includes(search) ||
-        member.lastName.toLowerCase().includes(search) ||
-        member.middleName.toLowerCase().includes(search) ||
-        member.telephone.toString().includes(search)
-      );
-    });
-  }, [debouncedSearchTerm, members]);
+  // const safeRows = useMemo(() => {
+  //   return members.filter((member) => {
+  //     const search = debouncedSearchTerm.toLowerCase();
+  //     return (
+  //       member.firstName.toLowerCase().includes(search) ||
+  //       member.lastName.toLowerCase().includes(search) ||
+  //       member.middleName.toLowerCase().includes(search) ||
+  //       member.telephone.toString().includes(search)
+  //     );
+  //   });
+  // }, [debouncedSearchTerm, members]);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - safeRows.length) : 0;
@@ -339,7 +342,37 @@ export default function RegisteredMembersData({ rows }) {
   };
 
   // Callback to fetch Members when the debounced search term changes
-  const fetchMembers = async () => {
+  // const fetchMembers = useCallback(async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const response = await axios.get('http://localhost:3001/members', {
+  //       params: {
+  //         search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
+  //       },
+  //     });
+  //     setMembers(response.data);
+  //   } catch (err) {
+  //     setError(
+  //       `Failed to fetch Members: ${err.response?.data?.error || err.message}`
+  //     );
+  //     console.error('Fetch Members error:', err);
+  //     setMembers([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, []); // Only re-create if debouncedSearchTerm changes
+
+  // useEffect(() => {
+  //   fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
+  // }, [fetchMembers]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  useEffect(() => {
+  async function fetchMembers () {
     setLoading(true);
     setError(null);
     try {
@@ -348,7 +381,8 @@ export default function RegisteredMembersData({ rows }) {
           search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
         },
       });
-      setMembers(response.data);
+	  const data = await response.json()
+      setMembers(data);
     } catch (err) {
       setError(
         `Failed to fetch Members: ${err.response?.data?.error || err.message}`
@@ -357,16 +391,21 @@ export default function RegisteredMembersData({ rows }) {
       setMembers([]);
     } finally {
       setLoading(false);
-    }
-  }; // Only re-create if debouncedSearchTerm changes
+    }}
+     fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
+  }, []);
 
-  useEffect(() => {
-    fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
-  }, [debouncedSearchTerm]);
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+const safeRows = useMemo(() => {
+    return members.filter((member) => {
+      const search = debouncedSearchTerm.toLowerCase();
+      return (
+        member.firstName.toLowerCase().includes(search) ||
+        member.lastName.toLowerCase().includes(search) ||
+        member.middleName.toLowerCase().includes(search) ||
+        member.telephone.toString().includes(search)
+      );
+    });
+  }, [debouncedSearchTerm, members]);
 
   return (
     <div className='m-5 bg-white p-2'>
