@@ -388,7 +388,7 @@ export default function MembersData({ rows }) {
       ) : error ? (
         <Alert severity='error'>{error}</Alert>
       ) : orders.length === 0 ? (
-        <Alert severity='info'>No orders found matching "{searchTerm}".</Alert>
+        <Alert severity='info'>{`No orders found matching ${searchTerm}.`}</Alert>
       ) : (
         <TableContainer
           component={Paper}

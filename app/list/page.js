@@ -1,5 +1,9 @@
-import MemberDataCard from '@/components/MemberDataCard';
+//import MemberDataCard from '@/components/MemberDataCard';
+
+import { dividerClasses } from "@mui/material";
 
 export default function MemberList() {
-  return <MemberDataCard />;
+  return (
+    <div>Hello</div>
+  );
 }

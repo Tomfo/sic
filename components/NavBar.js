@@ -22,7 +22,7 @@ export default function NavBar() {
             className='rounded-full'
           />
           <span className='font-bold tracking-tight hidden sm:block'>
-            MOBA '86 Group Insurance Policy
+            MOBA &quot 86 Group Insurance Policy
           </span>
         </Link>
 
