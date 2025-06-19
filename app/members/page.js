@@ -339,7 +339,7 @@ export default function RegisteredMembersData({ rows }) {
   };
 
   // Callback to fetch Members when the debounced search term changes
-  const fetchMembers = useCallback(async () => {
+  const fetchMembers = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -358,11 +358,11 @@ export default function RegisteredMembersData({ rows }) {
     } finally {
       setLoading(false);
     }
-  }, []); // Only re-create if debouncedSearchTerm changes
+  }; // Only re-create if debouncedSearchTerm changes
 
   useEffect(() => {
     fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
-  }, [fetchMembers]);
+  }, [debouncedSearchTerm]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
