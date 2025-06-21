@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/lib/constants';
 //import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useTheme, styled } from '@mui/material/styles';
@@ -53,7 +54,6 @@ import DeleteModal from '@/components/DeleteModal';
 import { getMembers } from '@/lib/members';
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 // Styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
