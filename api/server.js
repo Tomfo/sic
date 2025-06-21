@@ -10,7 +10,7 @@ app.use(express.json());
 
 const port = process.env.PORT || 3001;
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.NEXT_PUBLIC_FRONTEND_API_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 };
 app.use(cors(corsOptions));
@@ -335,6 +335,8 @@ app.use((err, req, res, next) => {
 });
 
 //start server
+console.log(process.env.NEXT_PUBLIC_FRONTEND_API_URL)
+console.log(process.env.NEXT_PUBLIC_API_URL)
 app.listen(port, () => {
   console.log(
     new Date().toLocaleTimeString([], {

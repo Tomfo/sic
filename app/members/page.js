@@ -50,6 +50,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import PreviewRoundedIcon from '@mui/icons-material/PreviewRounded';
 import DeleteModal from '@/components/DeleteModal';
+import { getMembers } from '@/lib/members';
+
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
 // Styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${TableCell.head}`]: {
@@ -341,48 +346,18 @@ export default function RegisteredMembersData() {
     setPage(0);
   };
 
-  // Callback to fetch Members when the debounced search term changes
-  // const fetchMembers = useCallback(async () => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const response = await axios.get('http://localhost:3001/members', {
-  //       params: {
-  //         search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
-  //       },
-  //     });
-  //     setMembers(response.data);
-  //   } catch (err) {
-  //     setError(
-  //       `Failed to fetch Members: ${err.response?.data?.error || err.message}`
-  //     );
-  //     console.error('Fetch Members error:', err);
-  //     setMembers([]);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []); // Only re-create if debouncedSearchTerm changes
-
-  // useEffect(() => {
-  //   fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
-  // }, [fetchMembers]);
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  useEffect(() => {
-  async function fetchMembers () {
+  //Callback to fetch Members when the debounced search term changes
+  const fetchMembers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:3001/members', {
+    //  const response = await getMembers(debouncedSearchTerm)
+      const response = await axios.get(`${API_URL}/members`, {
         params: {
           search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
         },
       });
-	  const data = await response.json()
-      setMembers(data);
+      setMembers(response.data);
     } catch (err) {
       setError(
         `Failed to fetch Members: ${err.response?.data?.error || err.message}`
@@ -391,9 +366,40 @@ export default function RegisteredMembersData() {
       setMembers([]);
     } finally {
       setLoading(false);
-    }}
-     fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
-  });
+    }
+  }, []); // Only re-create if debouncedSearchTerm changes
+
+  useEffect(() => {
+    fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
+  }, [fetchMembers]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // useEffect(() => {
+  // async function fetchMembers () {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const response = await axios.get('http://localhost:3001/members', {
+  //       params: {
+  //         search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
+  //       },
+  //     });
+	//   const data = await response.data
+  //     setMembers(data);
+  //   } catch (err) {
+  //     setError(
+  //       `Failed to fetch Members: ${err.response?.data?.error || err.message}`
+  //     );
+  //     console.error('Fetch Members error:', err);
+  //     setMembers([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }}
+  //    fetchMembers(); // Initial fetch and subsequent fetches on debounced term change
+  // });
 
 const safeRows = useMemo(() => {
     return members.filter((member) => {
