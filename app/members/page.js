@@ -51,7 +51,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import PreviewRoundedIcon from '@mui/icons-material/PreviewRounded';
 import DeleteModal from '@/components/DeleteModal';
-import { getMembers } from '@/lib/members';
+import { getMembers ,deleteMembersById} from '@/lib/members';
 
 
 
@@ -204,7 +204,8 @@ function ActionsCell({ member, onDeleteRecord }) {
     try {
       // Perform your delete operation here
       console.log('Deleting:', itemToDelete);
-      await axios.delete(`http://localhost:3001/members/${itemToDelete.id}`);
+    // response= await deleteMembersById(itemToDelete)
+     await axios.delete(`${API_URL}/api/members/${itemToDelete.id}`);
       onDeleteRecord();
       // Simulate API call
     } catch (error) {
@@ -351,8 +352,9 @@ export default function RegisteredMembersData() {
     setLoading(true);
     setError(null);
     try {
-    //  const response = await getMembers(debouncedSearchTerm)
-      const response = await axios.get(`${API_URL}/members`, {
+      
+     
+      const response = await axios.get(`${API_URL}/api/members`, {
         params: {
           search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
         },

@@ -108,7 +108,7 @@ export default function MemberForm() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await axios.post('http://localhost:3001/members', data);
+      const response = await axios.post(`${API_URL}/api/members`, data);
       alert('Member created successfully!');
     } catch (error) {
       alert('Failed to submit member. Please try again.');

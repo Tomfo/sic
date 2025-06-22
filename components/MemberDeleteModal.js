@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { API_URL } from '@/lib/constants';
 import {
   Modal,
   Box,
@@ -34,7 +35,7 @@ export default function MemberDeleteModal({
     setError('');
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:3001/members/${member.id}`);
+      await axios.delete(`${API_URL}/members/${member.id}`);
       setDeleted(true);
       if (onDeleteSuccess) onDeleteSuccess(member.id);
       setTimeout(() => {

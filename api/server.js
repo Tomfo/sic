@@ -31,7 +31,7 @@ const asyncHandler = (fn) => (req, res, next) =>
 
 // Get all users
 app.get(
-  '/members',
+  '/api/members',
   asyncHandler(async (req, res) => {
     const { search } = req.query;
     const whereClause = {};
@@ -77,7 +77,7 @@ app.get(
 
 //Create Member
 app.post(
-  '/members',
+  '/api/members',
   asyncHandler(async (req, res, next) => {
     const {
       nationalId,
@@ -154,7 +154,7 @@ app.post(
 
 //Get Memnber by ID
 app.get(
-  '/members/:id',
+  '/api/members/:id',
   asyncHandler(async (req, res, next) => {
     const id = parseInt(req.params.id);
     const person = await prisma.person.findUnique({
@@ -190,7 +190,7 @@ app.get(
 
 // Full update of Member with their parents and children, deleting related data
 app.put(
-  '/members/:id',
+  '/api/members/:id',
   asyncHandler(async (req, res, next) => {
     const id = parseInt(req.params.id);
     const { children = [], parents = [], ...memberData } = req.body;
@@ -293,7 +293,7 @@ app.put(
 
 //Delete Member
 app.delete(
-  '/members/:id',
+  '/api/members/:id',
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     // console.log('delete id from server:', id);

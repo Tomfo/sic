@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 // import { revalidatePath } from 'next/cache';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
+import { API_URL } from '@/lib/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -81,7 +81,7 @@ export default function RegistrationForm() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await axios.post('http://localhost:3001/members', data);
+      const response = await axios.post(`${API_URL}/api/members`, data);
 
       // if (!response.ok) throw new Error('Submission failed');
 

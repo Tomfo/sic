@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, use } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/lib/constants';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useTheme, styled } from '@mui/material/styles';
@@ -187,7 +188,7 @@ function ActionsCell({ member }) {
     try {
       // Perform your delete operation here
       console.log('Deleting:', itemToDelete);
-      await axios.delete(`http://localhost:3001/members/${itemToDelete.id}`);
+      await axios.delete(`${API_URL}/members/${itemToDelete.id}`);
       // Simulate API call
     } catch (error) {
       console.error('Delete failed:', error);
@@ -324,7 +325,7 @@ export default function MembersData({ rows }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:3001/members', {
+      const response = await axios.get(`${API_URL}/api/members`, {
         params: {
           search: debouncedSearchTerm, // Pass the debounced search term as a query parameter
         },
